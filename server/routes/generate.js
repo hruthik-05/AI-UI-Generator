@@ -1,4 +1,6 @@
 import express from "express";
+import { validateGeneratedCode } from "../utils/validate.js";
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const router = express.Router();
@@ -33,6 +35,13 @@ ${JSON.stringify(plan)}
     const result = await model.generateContent(prompt);
 
     const text = await result.response.text();
+    const isValid = validateGeneratedCode(text);
+
+if (!isValid) {
+  return res.status(400).json({
+    error: "Generated code contains unauthorized components"
+  });
+}
 
     res.json({ code: text });
 
