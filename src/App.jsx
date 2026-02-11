@@ -5,6 +5,7 @@ import PreviewPanel from "./components/PreviewPanel.jsx";
 
 export default function App() {
   const [code, setCode] = useState("");
+  const [explanation, setExplanation] = useState("");
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
@@ -52,7 +53,7 @@ export default function App() {
           >
             💬 AI Chat
           </div>
-          <ChatPanel setCode={setCode} />
+         <ChatPanel setCode={setCode} setExplanation={setExplanation} />
         </div>
 
         {/* CODE EDITOR */}
@@ -97,6 +98,11 @@ export default function App() {
             🎨 Live Preview
           </div>
           <PreviewPanel code={code} />
+          <div style={{ padding: "16px", borderTop: "1px solid #ddd" }}>
+  <h3>AI Reasoning</h3>
+  <p>{explanation}</p>
+</div>
+
         </div>
       </div>
     </div>

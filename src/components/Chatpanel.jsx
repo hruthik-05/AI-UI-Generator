@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function ChatPanel({ setCode }) {
+export default function ChatPanel({ setCode, setExplanation }) {
 
   const [input, setInput] = useState("");
 
@@ -20,6 +20,11 @@ export default function ChatPanel({ setCode }) {
       const generateRes = await axios.post("http://localhost:5000/generate", {
         plan: plan
       });
+      const explainRes = await axios.post("http://localhost:5000/explain", {
+        plan: plan
+      });
+
+      setExplanation(explainRes.data.explanation);
 
       const code = generateRes.data.code;
 
