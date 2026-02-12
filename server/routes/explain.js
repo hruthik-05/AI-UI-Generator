@@ -21,7 +21,7 @@ You are a UI explanation agent.
 Explain clearly why the selected layout and components were chosen.
 
 Plan:
-${plan}
+${JSON.stringify(plan, null, 2)}
 `;
 
         const result = await model.generateContent(prompt);
