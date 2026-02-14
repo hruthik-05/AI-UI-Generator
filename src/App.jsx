@@ -7,159 +7,190 @@ export default function App() {
   const [code, setCode] = useState("");
   const [explanation, setExplanation] = useState("");
   const [history, setHistory] = useState([]);
+  const [currentPlan, setCurrentPlan] = useState(null);
+
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        background: "linear-gradient(135deg, #0f172a, #1e293b, #111827)",
-        color: "#f8fafc",
-        fontFamily: "Inter, sans-serif",
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      
       {/* HEADER */}
       <div
         style={{
-          padding: "20px 32px",
-          fontSize: "22px",
-          fontWeight: "700",
-          background:
-            "linear-gradient(90deg, rgba(99,102,241,0.9), rgba(236,72,153,0.9))",
+          padding: "18px 28px",
+          fontSize: "20px",
+          fontWeight: "600",
+          background: "linear-gradient(90deg, #6366f1, #8b5cf6)",
+          color: "white",
           letterSpacing: "0.5px",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
+          boxShadow: "0 4px 20px rgba(99,102,241,0.3)"
         }}
       >
         🚀 AI UI Studio
       </div>
 
-      {/* MAIN */}
+      {/* MAIN LAYOUT */}
       <div
         style={{
           display: "flex",
           flex: 1,
-          padding: "28px",
-          gap: "28px",
+          padding: "24px",
+          gap: "24px",
         }}
       >
-        {/* LEFT PANEL */}
-        <GlassCard width="28%">
-          <SectionTitle color="#818cf8">💬 AI Chat</SectionTitle>
 
-          <ChatPanel
-            setCode={setCode}
-            setExplanation={setExplanation}
-            setHistory={setHistory}
-          />
+        {/* LEFT: CHAT + HISTORY */}
+        <div
+          className="card"
+          style={{
+            width: "28%",
+            padding: "18px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 10,
+                color: "#6366f1",
+              }}
+            >
+              💬 AI Chat
+            </div>
+            <ChatPanel
+              setCode={setCode}
+  setExplanation={setExplanation}
+  currentPlan={currentPlan}
+  setCurrentPlan={setCurrentPlan}
+  history={history}
+  setHistory={setHistory}
+            />
+          </div>
 
-          <div style={{ marginTop: "24px" }}>
-            <SectionTitle color="#c084fc" small>
+          {/* HISTORY */}
+          <div
+            style={{
+              borderTop: "1px solid rgba(0,0,0,0.05)",
+              paddingTop: "16px",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: 12,
+                fontSize: "14px",
+                color: "#475569",
+              }}
+            >
               🕓 Recent Requests
-            </SectionTitle>
+            </div>
 
-            <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+            <div style={{ overflowY: "auto", maxHeight: "200px" }}>
               {history.map((item, index) => (
                 <div
                   key={index}
-                  onClick={() => setCode(item.code)}
                   style={{
-                    padding: "10px",
-                    borderRadius: "10px",
-                    marginBottom: "8px",
+                    padding: "8px 10px",
+                    borderRadius: "8px",
+                    marginBottom: "6px",
                     cursor: "pointer",
-                    background:
-                      "linear-gradient(90deg, rgba(99,102,241,0.15), rgba(236,72,153,0.15))",
-                    transition: "0.2s",
+                    fontSize: "13px",
+                    background: "rgba(99,102,241,0.05)",
+                    color: "#1e293b"
+                    
                   }}
+                  onClick={() => setCode(item.code)}
                 >
-                  {item.input}
+                  {item.userInput}
                 </div>
               ))}
             </div>
           </div>
-        </GlassCard>
+        </div>
 
-        {/* CENTER PANEL */}
-        <GlassCard width="36%">
-          <SectionTitle color="#f472b6">🧠 Code Editor</SectionTitle>
+        {/* CENTER: CODE EDITOR */}
+        <div
+          className="card"
+          style={{
+            width: "36%",
+            padding: "18px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 600,
+              marginBottom: 14,
+              color: "#8b5cf6",
+            }}
+          >
+            🧠 Code Editor
+          </div>
 
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, overflow: "hidden" }}>
             <CodeEditorPanel code={code} setCode={setCode} />
           </div>
-        </GlassCard>
+        </div>
 
-        {/* RIGHT PANEL */}
-        <GlassCard flex={1}>
-          <SectionTitle color="#22d3ee">🎨 Live Preview</SectionTitle>
+        {/* RIGHT: PREVIEW + REASONING */}
+        <div
+          className="card"
+          style={{
+            flex: 1,
+            padding: "18px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 600,
+              marginBottom: 14,
+              color: "#ec4899",
+            }}
+          >
+            🎨 Live Preview
+          </div>
 
-          <div style={{ flex: 1, overflow: "auto", marginBottom: "18px" }}>
+          <div style={{ flex: 1, overflow: "auto", marginBottom: "16px" }}>
             <PreviewPanel code={code} />
           </div>
 
+          {/* Reasoning Section */}
           <div
             style={{
-              borderTop: "1px solid rgba(255,255,255,0.1)",
-              paddingTop: "16px",
+              borderTop: "1px solid rgba(0,0,0,0.08)",
+              paddingTop: "14px",
             }}
           >
-            <SectionTitle small color="#94a3b8">
+            <div
+              style={{
+                fontWeight: 600,
+                marginBottom: "8px",
+                fontSize: "14px",
+                color: "#475569",
+              }}
+            >
               🧠 AI Design Reasoning
-            </SectionTitle>
+            </div>
 
             <div
               style={{
                 fontSize: "14px",
                 lineHeight: "1.6",
-                maxHeight: "140px",
+                color: "#334155",
+                maxHeight: "150px",
                 overflowY: "auto",
-                opacity: 0.9,
               }}
             >
               {explanation || "Design reasoning will appear here."}
             </div>
           </div>
-        </GlassCard>
+        </div>
       </div>
-    </div>
-  );
-}
-
-/* ---------------- Reusable Components ---------------- */
-
-function GlassCard({ children, width, flex }) {
-  return (
-    <div
-      style={{
-        width,
-        flex,
-        display: "flex",
-        flexDirection: "column",
-        padding: "22px",
-        borderRadius: "18px",
-        background: "rgba(255,255,255,0.05)",
-        backdropFilter: "blur(14px)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
-        transition: "0.3s",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function SectionTitle({ children, color, small }) {
-  return (
-    <div
-      style={{
-        fontWeight: 600,
-        fontSize: small ? "14px" : "16px",
-        marginBottom: "16px",
-        color,
-      }}
-    >
-      {children}
     </div>
   );
 }
